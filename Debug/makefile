@@ -33,34 +33,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := basic-baremetal-intro
+BUILD_ARTIFACT_NAME := basic-00-xstruct
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-basic-baremetal-intro.elf \
+basic-00-xstruct.elf \
 
 MAP_FILES += \
-basic-baremetal-intro.map \
+basic-00-xstruct.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-basic-baremetal-intro.list \
+basic-00-xstruct.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: basic-baremetal-intro.elf secondary-outputs
+main-build: basic-00-xstruct.elf secondary-outputs
 
 # Tool invocations
-basic-baremetal-intro.elf basic-baremetal-intro.map: $(OBJS) $(USER_OBJS) C:\Users\user\STM32CubeIDE\workspace_1.19.0\basic-baremetal-intro\STM32F070RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "basic-baremetal-intro.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\user\STM32CubeIDE\workspace_1.19.0\basic-baremetal-intro\STM32F070RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="basic-baremetal-intro.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+basic-00-xstruct.elf basic-00-xstruct.map: $(OBJS) $(USER_OBJS) C:\Users\user\STM32CubeIDE\workspace_1.19.0\basic-00-xstruct\STM32F070RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "basic-00-xstruct.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\user\STM32CubeIDE\workspace_1.19.0\basic-00-xstruct\STM32F070RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="basic-00-xstruct.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -69,14 +69,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-basic-baremetal-intro.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "basic-baremetal-intro.list"
+basic-00-xstruct.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "basic-00-xstruct.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) basic-baremetal-intro.elf basic-baremetal-intro.list basic-baremetal-intro.map default.size.stdout
+	-$(RM) basic-00-xstruct.elf basic-00-xstruct.list basic-00-xstruct.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

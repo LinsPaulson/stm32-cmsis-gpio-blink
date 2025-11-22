@@ -1,39 +1,68 @@
-// PA5 - LED
-// 0x4800 0000 - GPIOA
-// 0x4002 1000 - RCC
-#define RCC_BASE_ADDR 0x40021000U
-#define GPIO_BASE_ADDR 0x48000000U
+#include <stdint.h>
 
-#define RCC_AHBENR_OFFSET 0x14U
-#define RCC_AHBENR_REG    (*(unsigned int volatile *)(RCC_BASE_ADDR + RCC_AHBENR_OFFSET))
-
-#define GPIOA_MODER_OFFSET 0x00U
-#define GPIOA_MODER_REG    (*(unsigned int volatile *)(GPIO_BASE_ADDR + GPIOA_MODER_OFFSET))
-
-#define GPIOA_ODR_OFFSET  0x14U
-#define GPIOA_ODR_REG     (*(unsigned int volatile *)(GPIO_BASE_ADDR + GPIOA_ODR_OFFSET))
-
-void delay(volatile unsigned int d)
+typedef struct
 {
-	while(d--);
-}
+	volatile uint32_t MODER;	/* offset: 0*00 */
+	volatile uint32_t OTYPER;	/* offset: 0*04 */
+	volatile uint32_t OSPEEDR;	/* offset: 0*08 */
+	volatile uint32_t PUPDR;	/* offset: 0*0C */
+	volatile uint32_t IDR;		/* offset: 0*10 */
+	volatile uint32_t ODR;		/* offset: 0*14 */
+	volatile uint32_t BSSR;		/* offset: 0*18 */
+	volatile uint32_t LCKR;		/* offset: 0*1C */
+	volatile uint32_t AFRL;		/* offset: 0*20 */
+	volatile uint32_t AFRH;		/* offset: 0*24 */
+	volatile uint32_t BRR;		/* offset: 0*28 */
+} GPIO_TypeDef;
 
+typedef struct
+{
+	volatile uint32_t DUMMY[5];
+	volatile uint32_t AHBENR; /* offset: 0x14*/
+} RCC_TypeDef;
+
+/* Base address definitions */
+#define RCC_BASE	0x40021000
+#define GPIOA_BASE	0x48000000
+
+/* Peripheral pointer definitions */
+#define RCC			((RCC_TypeDef*) RCC_BASE)
+#define GPIOA 		((GPIO_TypeDef*)GPIOA_BASE)
+
+/* Bit mask for enabling GPIOA (bit 0) */
+#define GPIOEN		(1U << 17)
+
+/* Bit mask for GPIOA pin 5 */
+#define PIN5		(1U << 5)
+#define LED_PIN PIN5
 
 int main(void)
 {
-	RCC_AHBENR_REG |= (1U << 17);
-
-	GPIOA_MODER_REG |= (1U << 10);
-	GPIOA_MODER_REG &= ~(1U << 11);
-
+	/* Enable clock access to GPIOA */
+	RCC->AHBENR |= GPIOEN;
+	GPIOA->MODER |= (1U<<10);
+	GPIOA->MODER &= ~(1U<<11);
 
 	while(1)
 	{
-	GPIOA_ODR_REG |= (1U << 5);
-	delay(500000);
+	 /* Set PA5(LED_PIN) high */
+	 GPIOA->ODR ^= LED_PIN;
 
-	GPIOA_ODR_REG &= ~(1U << 5);
-	delay(500000);
+	 /* simple delay*/
+	 for(int i=0; i<100000;i++);
+
 	}
-	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
