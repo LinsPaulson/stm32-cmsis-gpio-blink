@@ -49,7 +49,7 @@ int main(void)
 	 GPIOA->ODR ^= LED_PIN;
 
 	 /* simple delay*/
-	 for(int i=0; i<100000;i++);
+	 for(int i=0; i<1000000;i++);
 
 	}
 }
